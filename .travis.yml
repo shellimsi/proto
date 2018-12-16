@@ -1,0 +1,10 @@
+language: go
+# TODO: How to test protobuf file ???
+go:
+  - master
+jobs:
+  include:
+    - stage: test
+      name: "Run test"   
+      script:
+        - cd hub && go test -v

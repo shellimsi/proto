@@ -1,0 +1,30 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "github.com.shellimsi.hub";
+option java_outer_classname = "HubProto";
+
+package hub;
+
+enum Status {
+    UNKNOWN = 0;
+    OK = 1;
+    INVALID = 2;
+    FAILED = 3; 
+}
+service Resize {
+    rpc Resize (WinsizeRequest) returns (WinsizeResponse);
+}
+
+message WinsizeRequest {
+    uint32 rows = 1;
+    uint32 cols = 2;
+    uint32 x = 3;
+    uint32 y = 4;
+    uint64 session_id = 5;
+}
+
+message WinsizeResponse {
+    string  Status  = 1;
+}

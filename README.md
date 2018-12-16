@@ -1,2 +1,2 @@
-# proto
-This repo includes proto files  for Shellimsi
+# Proto
+This repo includes proto files for Shellimsi.
