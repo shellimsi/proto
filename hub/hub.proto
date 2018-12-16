@@ -13,7 +13,7 @@ enum Status {
     INVALID = 2;
     FAILED = 3; 
 }
-service Resize {
+service Terminal {
     rpc Resize (WinsizeRequest) returns (WinsizeResponse);
 }
 
