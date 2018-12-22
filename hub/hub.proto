@@ -13,8 +13,20 @@ enum Status {
     INVALID = 2;
     FAILED = 3; 
 }
+
 service Terminal {
     rpc Resize (WinsizeRequest) returns (WinsizeResponse);
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+}
+
+message RegisterRequest {
+    string clientID = 1;
+}
+
+message RegisterResponse {
+    string host = 1;
+    uint32 port = 2;
+    uint64 session_id = 3;
 }
 
 message WinsizeRequest {
