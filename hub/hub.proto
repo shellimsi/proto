@@ -41,9 +41,8 @@ message Winsize {
 }
 
 message RegisterResponse {
-    string host = 1;
-    uint32 port = 2;
-    uint64 session_id = 3;
+    Status Status  = 1;
+    string session_id = 2;
 }
 
 message WinsizeRequest {
