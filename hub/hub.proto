@@ -21,6 +21,21 @@ service Terminal {
 
 message RegisterRequest {
     string clientID = 1;
+    Winsize WSize = 2;
+}
+
+// type Winsize struct {
+// 	Rows uint16 // ws_row: Number of rows (in cells)
+// 	Cols uint16 // ws_col: Number of columns (in cells)
+// 	X    uint16 // ws_xpixel: Width in pixels
+// 	Y    uint16 // ws_ypixel: Height in pixels
+// }
+// Winsize describes the terminal size.
+message Winsize {
+    uint32 Rows = 1;
+    uint32 Cols = 2;
+    uint32 X = 3;
+    uint32 Y = 4;
 }
 
 message RegisterResponse {
@@ -30,13 +45,10 @@ message RegisterResponse {
 }
 
 message WinsizeRequest {
-    uint32 rows = 1;
-    uint32 cols = 2;
-    uint32 x = 3;
-    uint32 y = 4;
+    Winsize WSize = 2;
     uint64 session_id = 5;
 }
 
 message WinsizeResponse {
-    string  Status  = 1;
+    Status  Status  = 1;
 }
