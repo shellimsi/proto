@@ -20,8 +20,10 @@ service Terminal {
 }
 
 message RegisterRequest {
-    string clientID = 1;
-    Winsize WSize = 2;
+    string terminalID = 1;
+    string agentID = 2;
+    string address = 3;
+    Winsize WSize = 4;
 }
 
 // type Winsize struct {
@@ -50,5 +52,5 @@ message WinsizeRequest {
 }
 
 message WinsizeResponse {
-    Status  Status  = 1;
+    Status Status  = 1;
 }
