@@ -26,6 +26,7 @@ message ReadResponse {
     uint32 size = 1;
     bytes data = 2;
     ConnectionErr err = 3;
+    uint32 total_size = 4;
 }
 
 
