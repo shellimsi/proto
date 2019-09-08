@@ -23,303 +23,134 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type Status int32
+type ConnectionErr int32
 
 const (
-	Status_UNKNOWN Status = 0
-	Status_OK      Status = 1
-	Status_INVALID Status = 2
-	Status_FAILED  Status = 3
+	ConnectionErr_EOF           ConnectionErr = 0
+	ConnectionErr_UNEXPECTEDEOF ConnectionErr = 1
+	ConnectionErr_SHORTWRITE    ConnectionErr = 2
+	ConnectionErr_CLOSEDPIPE    ConnectionErr = 3
+	ConnectionErr_NOERROR       ConnectionErr = 4
 )
 
-var Status_name = map[int32]string{
-	0: "UNKNOWN",
-	1: "OK",
-	2: "INVALID",
-	3: "FAILED",
+var ConnectionErr_name = map[int32]string{
+	0: "EOF",
+	1: "UNEXPECTEDEOF",
+	2: "SHORTWRITE",
+	3: "CLOSEDPIPE",
+	4: "NOERROR",
 }
-var Status_value = map[string]int32{
-	"UNKNOWN": 0,
-	"OK":      1,
-	"INVALID": 2,
-	"FAILED":  3,
-}
-
-func (x Status) String() string {
-	return proto.EnumName(Status_name, int32(x))
-}
-func (Status) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{0}
+var ConnectionErr_value = map[string]int32{
+	"EOF":           0,
+	"UNEXPECTEDEOF": 1,
+	"SHORTWRITE":    2,
+	"CLOSEDPIPE":    3,
+	"NOERROR":       4,
 }
 
-type RegisterRequest struct {
-	TerminalID           string   `protobuf:"bytes,1,opt,name=terminalID" json:"terminalID,omitempty"`
-	AgentID              string   `protobuf:"bytes,2,opt,name=agentID" json:"agentID,omitempty"`
-	Address              string   `protobuf:"bytes,3,opt,name=address" json:"address,omitempty"`
-	WSize                *Winsize `protobuf:"bytes,4,opt,name=WSize" json:"WSize,omitempty"`
+func (x ConnectionErr) String() string {
+	return proto.EnumName(ConnectionErr_name, int32(x))
+}
+func (ConnectionErr) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_hub_dea8c91438f2d5f7, []int{0}
+}
+
+type ReadRequest struct {
+	Size                 uint32   `protobuf:"varint,1,opt,name=size,proto3" json:"size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *RegisterRequest) Reset()         { *m = RegisterRequest{} }
-func (m *RegisterRequest) String() string { return proto.CompactTextString(m) }
-func (*RegisterRequest) ProtoMessage()    {}
-func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{0}
+func (m *ReadRequest) Reset()         { *m = ReadRequest{} }
+func (m *ReadRequest) String() string { return proto.CompactTextString(m) }
+func (*ReadRequest) ProtoMessage()    {}
+func (*ReadRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_hub_dea8c91438f2d5f7, []int{0}
 }
-func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_RegisterRequest.Unmarshal(m, b)
+func (m *ReadRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadRequest.Unmarshal(m, b)
 }
-func (m *RegisterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_RegisterRequest.Marshal(b, m, deterministic)
+func (m *ReadRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadRequest.Marshal(b, m, deterministic)
 }
-func (dst *RegisterRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RegisterRequest.Merge(dst, src)
+func (dst *ReadRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadRequest.Merge(dst, src)
 }
-func (m *RegisterRequest) XXX_Size() int {
-	return xxx_messageInfo_RegisterRequest.Size(m)
+func (m *ReadRequest) XXX_Size() int {
+	return xxx_messageInfo_ReadRequest.Size(m)
 }
-func (m *RegisterRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_RegisterRequest.DiscardUnknown(m)
+func (m *ReadRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RegisterRequest proto.InternalMessageInfo
+var xxx_messageInfo_ReadRequest proto.InternalMessageInfo
 
-func (m *RegisterRequest) GetTerminalID() string {
+func (m *ReadRequest) GetSize() uint32 {
 	if m != nil {
-		return m.TerminalID
+		return m.Size
 	}
-	return ""
+	return 0
 }
 
-func (m *RegisterRequest) GetAgentID() string {
+type ReadResponse struct {
+	Size                 uint32        `protobuf:"varint,1,opt,name=size,proto3" json:"size,omitempty"`
+	Data                 []byte        `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Err                  ConnectionErr `protobuf:"varint,3,opt,name=err,proto3,enum=hub.ConnectionErr" json:"err,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *ReadResponse) Reset()         { *m = ReadResponse{} }
+func (m *ReadResponse) String() string { return proto.CompactTextString(m) }
+func (*ReadResponse) ProtoMessage()    {}
+func (*ReadResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_hub_dea8c91438f2d5f7, []int{1}
+}
+func (m *ReadResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadResponse.Unmarshal(m, b)
+}
+func (m *ReadResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadResponse.Marshal(b, m, deterministic)
+}
+func (dst *ReadResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadResponse.Merge(dst, src)
+}
+func (m *ReadResponse) XXX_Size() int {
+	return xxx_messageInfo_ReadResponse.Size(m)
+}
+func (m *ReadResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReadResponse proto.InternalMessageInfo
+
+func (m *ReadResponse) GetSize() uint32 {
 	if m != nil {
-		return m.AgentID
+		return m.Size
 	}
-	return ""
+	return 0
 }
 
-func (m *RegisterRequest) GetAddress() string {
+func (m *ReadResponse) GetData() []byte {
 	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *RegisterRequest) GetWSize() *Winsize {
-	if m != nil {
-		return m.WSize
+		return m.Data
 	}
 	return nil
 }
 
-// type Winsize struct {
-// 	Rows uint16 // ws_row: Number of rows (in cells)
-// 	Cols uint16 // ws_col: Number of columns (in cells)
-// 	X    uint16 // ws_xpixel: Width in pixels
-// 	Y    uint16 // ws_ypixel: Height in pixels
-// }
-// Winsize describes the terminal size.
-type Winsize struct {
-	Rows                 uint32   `protobuf:"varint,1,opt,name=Rows" json:"Rows,omitempty"`
-	Cols                 uint32   `protobuf:"varint,2,opt,name=Cols" json:"Cols,omitempty"`
-	X                    uint32   `protobuf:"varint,3,opt,name=X" json:"X,omitempty"`
-	Y                    uint32   `protobuf:"varint,4,opt,name=Y" json:"Y,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Winsize) Reset()         { *m = Winsize{} }
-func (m *Winsize) String() string { return proto.CompactTextString(m) }
-func (*Winsize) ProtoMessage()    {}
-func (*Winsize) Descriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{1}
-}
-func (m *Winsize) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Winsize.Unmarshal(m, b)
-}
-func (m *Winsize) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Winsize.Marshal(b, m, deterministic)
-}
-func (dst *Winsize) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Winsize.Merge(dst, src)
-}
-func (m *Winsize) XXX_Size() int {
-	return xxx_messageInfo_Winsize.Size(m)
-}
-func (m *Winsize) XXX_DiscardUnknown() {
-	xxx_messageInfo_Winsize.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Winsize proto.InternalMessageInfo
-
-func (m *Winsize) GetRows() uint32 {
+func (m *ReadResponse) GetErr() ConnectionErr {
 	if m != nil {
-		return m.Rows
+		return m.Err
 	}
-	return 0
-}
-
-func (m *Winsize) GetCols() uint32 {
-	if m != nil {
-		return m.Cols
-	}
-	return 0
-}
-
-func (m *Winsize) GetX() uint32 {
-	if m != nil {
-		return m.X
-	}
-	return 0
-}
-
-func (m *Winsize) GetY() uint32 {
-	if m != nil {
-		return m.Y
-	}
-	return 0
-}
-
-type RegisterResponse struct {
-	Status               Status   `protobuf:"varint,1,opt,name=Status,enum=hub.Status" json:"Status,omitempty"`
-	SessionId            string   `protobuf:"bytes,2,opt,name=session_id,json=sessionId" json:"session_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *RegisterResponse) Reset()         { *m = RegisterResponse{} }
-func (m *RegisterResponse) String() string { return proto.CompactTextString(m) }
-func (*RegisterResponse) ProtoMessage()    {}
-func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{2}
-}
-func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_RegisterResponse.Unmarshal(m, b)
-}
-func (m *RegisterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_RegisterResponse.Marshal(b, m, deterministic)
-}
-func (dst *RegisterResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RegisterResponse.Merge(dst, src)
-}
-func (m *RegisterResponse) XXX_Size() int {
-	return xxx_messageInfo_RegisterResponse.Size(m)
-}
-func (m *RegisterResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_RegisterResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_RegisterResponse proto.InternalMessageInfo
-
-func (m *RegisterResponse) GetStatus() Status {
-	if m != nil {
-		return m.Status
-	}
-	return Status_UNKNOWN
-}
-
-func (m *RegisterResponse) GetSessionId() string {
-	if m != nil {
-		return m.SessionId
-	}
-	return ""
-}
-
-type WinsizeRequest struct {
-	WSize                *Winsize `protobuf:"bytes,2,opt,name=WSize" json:"WSize,omitempty"`
-	SessionId            uint64   `protobuf:"varint,5,opt,name=session_id,json=sessionId" json:"session_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *WinsizeRequest) Reset()         { *m = WinsizeRequest{} }
-func (m *WinsizeRequest) String() string { return proto.CompactTextString(m) }
-func (*WinsizeRequest) ProtoMessage()    {}
-func (*WinsizeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{3}
-}
-func (m *WinsizeRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_WinsizeRequest.Unmarshal(m, b)
-}
-func (m *WinsizeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_WinsizeRequest.Marshal(b, m, deterministic)
-}
-func (dst *WinsizeRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_WinsizeRequest.Merge(dst, src)
-}
-func (m *WinsizeRequest) XXX_Size() int {
-	return xxx_messageInfo_WinsizeRequest.Size(m)
-}
-func (m *WinsizeRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_WinsizeRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_WinsizeRequest proto.InternalMessageInfo
-
-func (m *WinsizeRequest) GetWSize() *Winsize {
-	if m != nil {
-		return m.WSize
-	}
-	return nil
-}
-
-func (m *WinsizeRequest) GetSessionId() uint64 {
-	if m != nil {
-		return m.SessionId
-	}
-	return 0
-}
-
-type WinsizeResponse struct {
-	Status               Status   `protobuf:"varint,1,opt,name=Status,enum=hub.Status" json:"Status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *WinsizeResponse) Reset()         { *m = WinsizeResponse{} }
-func (m *WinsizeResponse) String() string { return proto.CompactTextString(m) }
-func (*WinsizeResponse) ProtoMessage()    {}
-func (*WinsizeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_hub_6a6d3805bd6f79b1, []int{4}
-}
-func (m *WinsizeResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_WinsizeResponse.Unmarshal(m, b)
-}
-func (m *WinsizeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_WinsizeResponse.Marshal(b, m, deterministic)
-}
-func (dst *WinsizeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_WinsizeResponse.Merge(dst, src)
-}
-func (m *WinsizeResponse) XXX_Size() int {
-	return xxx_messageInfo_WinsizeResponse.Size(m)
-}
-func (m *WinsizeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_WinsizeResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_WinsizeResponse proto.InternalMessageInfo
-
-func (m *WinsizeResponse) GetStatus() Status {
-	if m != nil {
-		return m.Status
-	}
-	return Status_UNKNOWN
+	return ConnectionErr_EOF
 }
 
 func init() {
-	proto.RegisterType((*RegisterRequest)(nil), "hub.RegisterRequest")
-	proto.RegisterType((*Winsize)(nil), "hub.Winsize")
-	proto.RegisterType((*RegisterResponse)(nil), "hub.RegisterResponse")
-	proto.RegisterType((*WinsizeRequest)(nil), "hub.WinsizeRequest")
-	proto.RegisterType((*WinsizeResponse)(nil), "hub.WinsizeResponse")
-	proto.RegisterEnum("hub.Status", Status_name, Status_value)
+	proto.RegisterType((*ReadRequest)(nil), "hub.ReadRequest")
+	proto.RegisterType((*ReadResponse)(nil), "hub.ReadResponse")
+	proto.RegisterEnum("hub.ConnectionErr", ConnectionErr_name, ConnectionErr_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -330,130 +161,89 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// TerminalClient is the client API for Terminal service.
+// ConnectionClient is the client API for Connection service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type TerminalClient interface {
-	Resize(ctx context.Context, in *WinsizeRequest, opts ...grpc.CallOption) (*WinsizeResponse, error)
-	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+type ConnectionClient interface {
+	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
 }
 
-type terminalClient struct {
+type connectionClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewTerminalClient(cc *grpc.ClientConn) TerminalClient {
-	return &terminalClient{cc}
+func NewConnectionClient(cc *grpc.ClientConn) ConnectionClient {
+	return &connectionClient{cc}
 }
 
-func (c *terminalClient) Resize(ctx context.Context, in *WinsizeRequest, opts ...grpc.CallOption) (*WinsizeResponse, error) {
-	out := new(WinsizeResponse)
-	err := c.cc.Invoke(ctx, "/hub.Terminal/Resize", in, out, opts...)
+func (c *connectionClient) Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error) {
+	out := new(ReadResponse)
+	err := c.cc.Invoke(ctx, "/hub.Connection/Read", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *terminalClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
-	out := new(RegisterResponse)
-	err := c.cc.Invoke(ctx, "/hub.Terminal/Register", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+// ConnectionServer is the server API for Connection service.
+type ConnectionServer interface {
+	Read(context.Context, *ReadRequest) (*ReadResponse, error)
 }
 
-// TerminalServer is the server API for Terminal service.
-type TerminalServer interface {
-	Resize(context.Context, *WinsizeRequest) (*WinsizeResponse, error)
-	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+func RegisterConnectionServer(s *grpc.Server, srv ConnectionServer) {
+	s.RegisterService(&_Connection_serviceDesc, srv)
 }
 
-func RegisterTerminalServer(s *grpc.Server, srv TerminalServer) {
-	s.RegisterService(&_Terminal_serviceDesc, srv)
-}
-
-func _Terminal_Resize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WinsizeRequest)
+func _Connection_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TerminalServer).Resize(ctx, in)
+		return srv.(ConnectionServer).Read(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/hub.Terminal/Resize",
+		FullMethod: "/hub.Connection/Read",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TerminalServer).Resize(ctx, req.(*WinsizeRequest))
+		return srv.(ConnectionServer).Read(ctx, req.(*ReadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Terminal_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TerminalServer).Register(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/hub.Terminal/Register",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TerminalServer).Register(ctx, req.(*RegisterRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _Terminal_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "hub.Terminal",
-	HandlerType: (*TerminalServer)(nil),
+var _Connection_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "hub.Connection",
+	HandlerType: (*ConnectionServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Resize",
-			Handler:    _Terminal_Resize_Handler,
-		},
-		{
-			MethodName: "Register",
-			Handler:    _Terminal_Register_Handler,
+			MethodName: "Read",
+			Handler:    _Connection_Read_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "hub.proto",
 }
 
-func init() { proto.RegisterFile("hub.proto", fileDescriptor_hub_6a6d3805bd6f79b1) }
+func init() { proto.RegisterFile("hub.proto", fileDescriptor_hub_dea8c91438f2d5f7) }
 
-var fileDescriptor_hub_6a6d3805bd6f79b1 = []byte{
-	// 392 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0x4d, 0xab, 0xda, 0x40,
-	0x14, 0xed, 0x44, 0x8d, 0x7a, 0x35, 0x1a, 0xa6, 0x2d, 0x04, 0xa1, 0x45, 0x52, 0x28, 0xd2, 0x85,
-	0x0b, 0x05, 0xbb, 0xd6, 0xa6, 0xa5, 0x41, 0x1b, 0x65, 0x6c, 0xfd, 0x58, 0x15, 0xd3, 0x0c, 0x3a,
-	0x10, 0x13, 0x9b, 0x99, 0xd0, 0xe2, 0x3f, 0x78, 0xff, 0xfa, 0x91, 0xc9, 0xc4, 0xa7, 0xc2, 0x5b,
-	0xbc, 0xdd, 0xdc, 0x73, 0x6e, 0xee, 0x39, 0xe7, 0xe6, 0x42, 0xfd, 0x90, 0xfa, 0xfd, 0x53, 0x12,
-	0x8b, 0x18, 0x97, 0x0e, 0xa9, 0x6f, 0x3f, 0x20, 0x68, 0x13, 0xba, 0x67, 0x5c, 0xd0, 0x84, 0xd0,
-	0xbf, 0x29, 0xe5, 0x02, 0xbf, 0x07, 0x10, 0x34, 0x39, 0xb2, 0x68, 0x17, 0xba, 0x8e, 0x85, 0xba,
-	0xa8, 0x57, 0x27, 0x57, 0x08, 0xb6, 0xa0, 0xba, 0xdb, 0xd3, 0x48, 0xb8, 0x8e, 0xa5, 0x49, 0xb2,
-	0x28, 0x25, 0x13, 0x04, 0x09, 0xe5, 0xdc, 0x2a, 0x29, 0x26, 0x2f, 0xb1, 0x0d, 0x95, 0xf5, 0x92,
-	0x9d, 0xa9, 0x55, 0xee, 0xa2, 0x5e, 0x63, 0xd0, 0xec, 0x67, 0x3e, 0xd6, 0x2c, 0xe2, 0xec, 0x4c,
-	0x49, 0x4e, 0xd9, 0x3f, 0xa0, 0xaa, 0x10, 0x8c, 0xa1, 0x4c, 0xe2, 0x7f, 0x5c, 0x8a, 0x1b, 0x44,
-	0xbe, 0x33, 0xec, 0x4b, 0x1c, 0x72, 0xa9, 0x69, 0x10, 0xf9, 0xc6, 0x4d, 0x40, 0x1b, 0x29, 0x65,
-	0x10, 0xb4, 0xc9, 0xaa, 0xad, 0x14, 0x30, 0x08, 0xda, 0xda, 0x2b, 0x30, 0x9f, 0x92, 0xf1, 0x53,
-	0x1c, 0x71, 0x8a, 0x3f, 0x80, 0xbe, 0x14, 0x3b, 0x91, 0xe6, 0x93, 0x5b, 0x83, 0x86, 0xf4, 0x91,
-	0x43, 0x44, 0x51, 0xf8, 0x1d, 0x00, 0xa7, 0x9c, 0xb3, 0x38, 0xfa, 0xcd, 0x02, 0x15, 0xb1, 0xae,
-	0x10, 0x37, 0xb0, 0x97, 0xd0, 0x2a, 0x8c, 0xab, 0x85, 0x5d, 0xc2, 0x69, 0xcf, 0x86, 0xbb, 0x1b,
-	0x5a, 0xe9, 0xa2, 0x5e, 0xf9, 0x7a, 0xe8, 0x08, 0xda, 0x97, 0xa1, 0x2f, 0xf0, 0xfa, 0x69, 0x54,
-	0x34, 0xe1, 0x06, 0x54, 0x7f, 0x79, 0x53, 0x6f, 0xbe, 0xf6, 0xcc, 0x57, 0x58, 0x07, 0x6d, 0x3e,
-	0x35, 0x51, 0x06, 0xba, 0xde, 0x6a, 0x3c, 0x73, 0x1d, 0x53, 0xc3, 0x00, 0xfa, 0xb7, 0xb1, 0x3b,
-	0xfb, 0xea, 0x98, 0xa5, 0xc1, 0x7f, 0xa8, 0xfd, 0x54, 0x7f, 0x14, 0x0f, 0x41, 0x27, 0x54, 0xae,
-	0xfd, 0xf5, 0x8d, 0xf3, 0x3c, 0x5d, 0xe7, 0xcd, 0x2d, 0xa8, 0xdc, 0x7d, 0x86, 0x5a, 0xb1, 0x5d,
-	0x9c, 0x77, 0xdc, 0x9d, 0x51, 0xe7, 0xed, 0x1d, 0x9a, 0x7f, 0x38, 0xf9, 0x08, 0xd6, 0x9e, 0x89,
-	0x8c, 0xfa, 0x13, 0x1f, 0xfb, 0xfc, 0x40, 0xc3, 0x90, 0x1d, 0x39, 0xcb, 0x9a, 0x27, 0xb5, 0xef,
-	0xa9, 0xbf, 0xc8, 0x8e, 0x73, 0x81, 0x7c, 0x5d, 0x5e, 0xe9, 0xf0, 0x31, 0x00, 0x00, 0xff, 0xff,
-	0x26, 0x07, 0xc0, 0xb2, 0xb2, 0x02, 0x00, 0x00,
+var fileDescriptor_hub_dea8c91438f2d5f7 = []byte{
+	// 267 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x41, 0x4f, 0xc2, 0x40,
+	0x10, 0x85, 0x5d, 0xda, 0x88, 0x0e, 0x94, 0x94, 0x39, 0x35, 0x9e, 0x2a, 0x31, 0xa6, 0xd1, 0xa4,
+	0x07, 0x3c, 0x79, 0xa5, 0xac, 0x81, 0xc4, 0xd0, 0x66, 0xa8, 0x91, 0x83, 0x97, 0x16, 0x36, 0xb6,
+	0x09, 0x74, 0x71, 0x77, 0x7b, 0xf1, 0xd7, 0x9b, 0x2d, 0x07, 0x31, 0xf1, 0xf6, 0xf6, 0xdb, 0x97,
+	0x99, 0x79, 0x0f, 0xae, 0xab, 0xb6, 0x8c, 0x8f, 0x4a, 0x1a, 0x89, 0x4e, 0xd5, 0x96, 0x93, 0x5b,
+	0x18, 0x90, 0x28, 0x76, 0x24, 0xbe, 0x5a, 0xa1, 0x0d, 0x22, 0xb8, 0xba, 0xfe, 0x16, 0x01, 0x0b,
+	0x59, 0xe4, 0x51, 0xa7, 0x27, 0x1f, 0x30, 0x3c, 0x59, 0xf4, 0x51, 0x36, 0x5a, 0xfc, 0xe7, 0xb1,
+	0x6c, 0x57, 0x98, 0x22, 0xe8, 0x85, 0x2c, 0x1a, 0x52, 0xa7, 0xf1, 0x0e, 0x1c, 0xa1, 0x54, 0xe0,
+	0x84, 0x2c, 0x1a, 0x4d, 0x31, 0xb6, 0x8b, 0x13, 0xd9, 0x34, 0x62, 0x6b, 0x6a, 0xd9, 0x70, 0xa5,
+	0xc8, 0x7e, 0x3f, 0x6c, 0xc0, 0xfb, 0x43, 0xb1, 0x0f, 0x0e, 0x4f, 0x5f, 0xfc, 0x0b, 0x1c, 0x83,
+	0xf7, 0xb6, 0xe2, 0x9b, 0x8c, 0x27, 0x39, 0x9f, 0x5b, 0xc4, 0x70, 0x04, 0xb0, 0x5e, 0xa4, 0x94,
+	0xbf, 0xd3, 0x32, 0xe7, 0x7e, 0xcf, 0xbe, 0x93, 0xd7, 0x74, 0xcd, 0xe7, 0xd9, 0x32, 0xe3, 0xbe,
+	0x83, 0x03, 0xe8, 0xaf, 0x52, 0x4e, 0x94, 0x92, 0xef, 0x4e, 0x9f, 0x01, 0x7e, 0x27, 0xe3, 0x23,
+	0xb8, 0x36, 0x05, 0xfa, 0xdd, 0x21, 0x67, 0x99, 0x6f, 0xc6, 0x67, 0xe4, 0x14, 0x71, 0x76, 0x0f,
+	0xc1, 0x67, 0x6d, 0x2c, 0xde, 0xca, 0x43, 0xac, 0x2b, 0xb1, 0xdf, 0xd7, 0x07, 0x5d, 0x5b, 0xe3,
+	0xec, 0x6a, 0xd1, 0x96, 0x99, 0x2d, 0x30, 0x63, 0xe5, 0x65, 0xd7, 0xe4, 0xd3, 0x4f, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x95, 0x3f, 0xdc, 0xaa, 0x56, 0x01, 0x00, 0x00,
 }

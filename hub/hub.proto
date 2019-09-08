@@ -7,49 +7,25 @@ option java_outer_classname = "HubProto";
 
 package hub;
 
-enum Status {
-    UNKNOWN = 0;
-    OK = 1;
-    INVALID = 2;
-    FAILED = 3; 
+service Connection {
+    rpc Read(ReadRequest) returns (ReadResponse);
 }
 
-service Terminal {
-    rpc Resize (WinsizeRequest) returns (WinsizeResponse);
-    rpc Register (RegisterRequest) returns (RegisterResponse);
+message ReadRequest {
+    uint32 size = 1;
 }
 
-message RegisterRequest {
-    string terminalID = 1;
-    string agentID = 2;
-    string address = 3;
-    Winsize WSize = 4;
+enum ConnectionErr {
+    EOF = 0;
+    UNEXPECTEDEOF = 1;
+    SHORTWRITE = 2;
+    CLOSEDPIPE = 3; 
+    NOERROR = 4;
+}
+message ReadResponse {
+    uint32 size = 1;
+    bytes data = 2;
+    ConnectionErr err = 3;
 }
 
-// type Winsize struct {
-// 	Rows uint16 // ws_row: Number of rows (in cells)
-// 	Cols uint16 // ws_col: Number of columns (in cells)
-// 	X    uint16 // ws_xpixel: Width in pixels
-// 	Y    uint16 // ws_ypixel: Height in pixels
-// }
-// Winsize describes the terminal size.
-message Winsize {
-    uint32 Rows = 1;
-    uint32 Cols = 2;
-    uint32 X = 3;
-    uint32 Y = 4;
-}
 
-message RegisterResponse {
-    Status Status  = 1;
-    string session_id = 2;
-}
-
-message WinsizeRequest {
-    Winsize WSize = 2;
-    uint64 session_id = 5;
-}
-
-message WinsizeResponse {
-    Status Status  = 1;
-}
