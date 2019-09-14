@@ -21,13 +21,11 @@ enum ConnectionErr {
     UNEXPECTEDEOF = 2;
     SHORTWRITE = 3;
     CLOSEDPIPE = 4;
-    NOERROR = 5;
 }
 message ReadResponse {
     uint32 size = 1;
     bytes data = 2;
     ConnectionErr err = 3;
-    uint32 total_size = 4;
 }
 
 
