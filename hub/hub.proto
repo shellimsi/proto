@@ -8,14 +8,26 @@ option java_outer_classname = "HubProto";
 package hub;
 
 service Connection {
+    rpc Register(RegisterRequest) returns (ReadResponse);
     rpc Read(ReadRequest) returns (ReadResponse);
     rpc Write(ReadRequest) returns (ReadResponse);
     rpc Close(ReadRequest) returns (ReadResponse);
 
 }
 
+message RegisterRequest {
+    string agentId = 1;
+}
+
+message RegisterResponse {
+    string agentId = 1;
+    string sessionId = 2;
+}
+
+
 message ReadRequest {
-    uint32 size = 1;
+   string sessionId = 1;
+   uint32 size = 2;
 }
 enum ConnectionErr {
     OK = 0;
@@ -32,7 +44,8 @@ message ReadResponse {
 }
 
 message WriteRequest {
-    bytes data = 1;
+    string sessionId = 1;
+    bytes data = 2;
 }
 
 message WriteResponse {
