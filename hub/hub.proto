@@ -9,12 +9,14 @@ package hub;
 
 service Connection {
     rpc Read(ReadRequest) returns (ReadResponse);
+    rpc Write(ReadRequest) returns (ReadResponse);
+    rpc Close(ReadRequest) returns (ReadResponse);
+
 }
 
 message ReadRequest {
     uint32 size = 1;
 }
-
 enum ConnectionErr {
     OK = 0;
     EOF = 1;
@@ -22,10 +24,22 @@ enum ConnectionErr {
     SHORTWRITE = 3;
     CLOSEDPIPE = 4;
 }
+
 message ReadResponse {
     uint32 size = 1;
     bytes data = 2;
     ConnectionErr err = 3;
 }
 
+message WriteRequest {
+    bytes data = 1;
+}
 
+message WriteResponse {
+    uint32 size = 1;
+    ConnectionErr err = 2;
+}
+message Addr {
+    string network = 1;
+    string string = 2;
+}
